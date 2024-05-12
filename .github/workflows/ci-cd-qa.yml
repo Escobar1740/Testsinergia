@@ -1,5 +1,10 @@
+name: Deploy to Azure QA
+
 on:
   push:
+    branches:
+      - qa
+  pull_request:
     branches:
       - qa
 
