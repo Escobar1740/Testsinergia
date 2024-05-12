@@ -3,8 +3,7 @@ name: Deploy to Azure
 on:
   push:
     branches:
-      - qa
-      - develop
+      - main
 
 jobs:
   build-and-deploy:
@@ -22,7 +21,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER_PROD }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
@@ -32,8 +31,8 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.WEBAPP_NAME }}
-          images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/getting-started/latest:${{ github.sha }}
+          app-name: ${{ secrets.WEBAPP_NAME_PROD }}
+          images: ${{ secrets.REGISTRY_LOGIN_SERVER_PROD }}/getting-started/latest:${{ github.sha }}
           slot-name: production
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PROD }}
 
